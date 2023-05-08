@@ -1,0 +1,36 @@
+<script>
+  var elementsArray = document.querySelectorAll('[id^="wpforms-form-"]');
+  elementsArray.forEach(function(elem) {
+    elem.addEventListener("submit", function(e) {
+      
+      var elements = event.target.elements;
+      for (var i = 0, element; element = elements[i++];) {
+        if (element.required === true && element.value === "") {
+           window.dataLayer = window.dataLayer || [];
+           window.dataLayer.push({
+             event: "wpFormSubmit_error",
+             wpFormId: event.target.id     
+           });
+           return
+        }
+      }
+
+      var elements = event.target.elements;
+      for (var i = 0, element; element = elements[i++];) {
+        var formField = element.name + ': ' + element.value;
+        console.log(formField);
+      }
+      
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "wpFormSubmit",
+        wpFormId: event.target.id,
+        //wpFormAction: event.target.action,
+        wpFormItemCampo1: event.target.elements.item(0).value,     
+        wpFormItemCampo2: event.target.elements.item(1).value,
+        wpFormItemCampo3: event.target.elements.item(2).value,
+        wpFormItemCampo4: event.target.elements.item(3).value        
+      });
+    });
+  });
+</script>
